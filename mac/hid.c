@@ -710,6 +710,7 @@ hid_device * HID_API_EXPORT hid_open_path(const char *path)
 		if (!strcmp(cbuf, path)) {
 			/* Matched Paths. Open this Device. */
 			IOReturn ret = IOHIDDeviceOpen(os_dev, kIOHIDOptionsTypeSeizeDevice);
+			//IOReturn ret = IOHIDDeviceOpen(os_dev, kIOHIDOptionsTypeNone);
 			if (ret == kIOReturnSuccess) {
 				char str[32];
 
@@ -743,6 +744,9 @@ hid_device * HID_API_EXPORT hid_open_path(const char *path)
 				return dev;
 			}
 			else {
+        if (ret == kIOReturnNotPrivileged) {
+          fprintf(stderr, "IOHIDDeviceOpen failed with kIOReturnNotPrivileged\n");
+        }
 				goto return_error;
 			}
 		}
